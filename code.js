@@ -1,3 +1,66 @@
+class AnimalFarm {
+    constructor() {
+        this.removedAnimals = [];  // Here I'll store all removed animal
+    }
+    
+    static add(animals) {
+        animals.forEach(animal => {
+            let createdAnimal;
+            switch (animal.type) {
+                case "elephant":
+                    createdAnimal = new Elephant(animal.weight);
+                    break;
+                case "rabbit":
+                    createdAnimal = new Rabbit(animal.speed);
+                    break;
+                case "penguin":
+                    createdAnimal = new Penguin(animal.swimmingSpeed);
+                    break;
+                default:
+                    console.error("We don't support the creation of this animal");
+                    return;
+            };
+            aList.appendChild(createdAnimal.element)
+        });
+    };
+    removeAnimalOnClick(event) {
+        const animals = Array.from(aList.children)
+        const index = animals.indexOf(event.currentTarget);
+        if(index === -1) {
+            console.log("Can't remove the right animal")
+        }
+        // I want to know index of the removed element because the animals order is important 
+        // for me and I'll use it when I'll return all removed animals
+        animalFarm.removedAnimals.push({index: index, element: event.currentTarget});
+        aList.removeChild(event.currentTarget);
+    }
+
+    returnDeletedAnimals() {
+        for(let i = this.removedAnimals.length - 1; i > 0; i--){ // Here I use the index to return the animal to its place
+            aList.insertBefore(this.removedAnimals[i].element, aList.children[this.removedAnimals[i].index])
+        }
+        this.removedAnimals = [];
+    }
+    
+    leaveOnlyPenguin() {
+        const animals = Array.from(aList.children)
+        animals.forEach(animal => {
+            if(animal.attributes[0].value === 'rabbit' || animal.attributes[0].value === 'elephant') {
+                this.removeAnimal(animal);
+            }
+        })
+    }
+    
+    removeAnimal(animal) {
+        const animals = Array.from(aList.children)
+        const index = animals.indexOf(animal)
+        this.removedAnimals.unshift({index: index, element: animal})
+        aList.removeChild(animal);
+    }
+};
+
+const animalFarm = new AnimalFarm();
+
 class Animal {
     constructor(specialProperty) {
         this.specialProperty = specialProperty;
@@ -12,7 +75,7 @@ class Animal {
         aImage.src = this.image;
         this.element.appendChild(aImage);
         this.element.appendChild(atext);
-        this.element.addEventListener('click', AnimalFarm.removeAnimalOnClick);
+        this.element.addEventListener('click', animalFarm.removeAnimalOnClick);
         return this.element;
     }
 }
@@ -47,72 +110,6 @@ class Elephant extends Animal{
     }
 }
 
-class AnimalFarm {
-    constructor(animals) {
-        if(!AnimalFarm.instance) { // I want to be sure that nobody mess with the singleton
-            this.animals = animals;
-            this.removedAnimals = [];  // Here I'll store all removed animals
-            AnimalFarm.instance = this;
-        }
-        return AnimalFarm.instance;
-    }
-    
-    static create(animals) {
-        animals.forEach(animal => {
-            let createdAnimal;
-            switch (animal.type) {
-                case "elephant":
-                    createdAnimal = new Elephant(animal.weight);
-                    break;
-                case "rabbit":
-                    createdAnimal = new Rabbit(animal.speed);
-                    break;
-                case "penguin":
-                    createdAnimal = new Penguin(animal.swimmingSpeed);
-                    break;
-                default:
-                    console.error("We don't support the creation of this animal")
-            };
-            aList.appendChild(createdAnimal.element)
-        });
-    };
-    static removeAnimalOnClick(event) {
-        const animals = Array.from(document.getElementById('Animals_div').children)
-        const index = animals.indexOf(event.currentTarget);
-        if(index === -1) {
-            console.log("Can't remove the right animal")
-        }
-        // I want to know index of the removed element because the animals order is important 
-        // for me and I'll use it when I'll return all removed animals
-        animalFarm.removedAnimals.unshift({index: index, element: event.currentTarget});
-        aList.removeChild(event.currentTarget);
-    }
-
-    returnDeletedAnimals() {
-        animalFarm.removedAnimals.forEach(animal => { // below i use the index to return the animal to its place
-            aList.insertBefore(animal.element, aList.children[animal.index])
-        })
-        animalFarm.removedAnimals = [];
-    }
-    
-    leaveOnlyPenguin() {
-        const animals = Array.from(this.animals.children)
-        animals.forEach(animal => {
-            if(animal.attributes[0].value === 'rabbit' || animal.attributes[0].value === 'elephant') {
-                AnimalFarm.removeAnimal(animal);
-            }
-        })
-    }
-    
-    static removeAnimal(animal) {
-        const animals = Array.from(document.getElementById('Animals_div').children)
-        const index = animals.indexOf(animal)
-        animalFarm.removedAnimals.unshift({index: index, element: animal})
-        aList.removeChild(animal);
-    }
-};
-
-
 let aList = document.getElementById("Animals_div");
 
 let aAnimal1 = new Elephant(780);
@@ -127,6 +124,4 @@ aList.appendChild(aAnimal4.element);
 
 let aData = [{ "type": "elephant", "weight": 660 }, { "type": "rabbit", "speed": 44 }, { "type": "penguin", "swimmingSpeed": 750 }, { "type": "elephant", "weight": 600 }, { "type": "penguin", "swimmingSpeed": 60 }];
 
-AnimalFarm.create(aData);
-const animalFarm = new AnimalFarm(aList);
-
+AnimalFarm.add(aData);
