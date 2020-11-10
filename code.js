@@ -59,19 +59,21 @@ class AnimalFarm {
     
     static create(animals) {
         animals.forEach(animal => {
+            let createdAnimal;
             switch (animal.type) {
                 case "elephant":
-                    aList.appendChild(new Elephant(animal.weight).element);
+                    createdAnimal = new Elephant(animal.weight);
                     break;
                 case "rabbit":
-                    aList.appendChild(new Rabbit(animal.speed).element);
+                    createdAnimal = new Rabbit(animal.speed);
                     break;
                 case "penguin":
-                    aList.appendChild(new Penguin(animal.swimmingSpeed).element);
+                    createdAnimal = new Penguin(animal.swimmingSpeed);
                     break;
                 default:
                     console.error("We don't support the creation of this animal")
             };
+            aList.appendChild(createdAnimal.element)
         });
     };
     static removeAnimalOnClick(event) {
