@@ -3,7 +3,7 @@ class AnimalFarm {
         this.removedAnimals = [];  // Here I'll store all removed animal
     }
     
-    static add(animals) {
+    add(animals) {
         animals.forEach(animal => {
             let createdAnimal;
             switch (animal.type) {
@@ -36,7 +36,7 @@ class AnimalFarm {
     }
 
     returnDeletedAnimals() {
-        for(let i = this.removedAnimals.length - 1; i > 0; i--){ // Here I use the index to return the animal to its place
+        for(let i = this.removedAnimals.length - 1; i >= 0; i--){ // Here I use the index to return the animal to its place
             aList.insertBefore(this.removedAnimals[i].element, aList.children[this.removedAnimals[i].index])
         }
         this.removedAnimals = [];
@@ -54,7 +54,7 @@ class AnimalFarm {
     removeAnimal(animal) {
         const animals = Array.from(aList.children)
         const index = animals.indexOf(animal)
-        this.removedAnimals.unshift({index: index, element: animal})
+        this.removedAnimals.push({index: index, element: animal})
         aList.removeChild(animal);
     }
 };
@@ -124,4 +124,4 @@ aList.appendChild(aAnimal4.element);
 
 let aData = [{ "type": "elephant", "weight": 660 }, { "type": "rabbit", "speed": 44 }, { "type": "penguin", "swimmingSpeed": 750 }, { "type": "elephant", "weight": 600 }, { "type": "penguin", "swimmingSpeed": 60 }];
 
-AnimalFarm.add(aData);
+animalFarm.add(aData);
