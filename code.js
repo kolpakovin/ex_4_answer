@@ -95,7 +95,7 @@ class Penguin extends Animal {
     constructor(specialProperty) {
         super(specialProperty);
         this.type = "penguin";
-        this.note = "The Penguin Swimming Speed is:" + this.specialProperty + "km/h";
+        this.note = `The Penguin Swimming Speed is:${this.specialProperty}km/h`;
         this.image = "./images/img03.jpg";
         this.createElement();
     };
@@ -105,7 +105,7 @@ class Rabbit extends Animal {
     constructor(specialProperty) {
         super(specialProperty);
         this.type = "rabbit";
-        this.note = "The Rabbit Speed is:" + this.specialProperty + "km/h";
+        this.note = `The Rabbit Speed is:${this.specialProperty}km/h`;
         this.image = "./images/img02.jpg";
         this.createElement();
     };
@@ -115,7 +115,7 @@ class Elephant extends Animal{
     constructor(specialProperty) {
         super(specialProperty);
         this.type = "elephant";
-        this.note = "The Elephant Weight is:" + this.specialProperty + "kg";
+        this.note = `The Elephant Weight is:${this.specialProperty}kg`;
         this.image = "./images/img01.jpg";
         this.createElement();
     };
